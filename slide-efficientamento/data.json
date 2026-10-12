@@ -1,0 +1,8 @@
+{
+  "_istruzioni": "Compilare i valori null. Date in formato AAAA-MM-GG. Poi: node build_slide.js",
+  "streams": [
+    { "nome": "Stream 1", "iniziale": null, "finale": null, "inizio": null, "fine": null },
+    { "nome": "Stream 2", "iniziale": null, "finale": null, "inizio": null, "fine": null },
+    { "nome": "Stream 3", "iniziale": null, "finale": null, "inizio": null, "fine": null }
+  ]
+}

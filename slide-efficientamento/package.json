@@ -1,0 +1,6 @@
+{
+  "name": "slide-efficientamento",
+  "private": true,
+  "scripts": { "build": "node build_slide.js" },
+  "dependencies": { "pptxgenjs": "^3.12.0" }
+}
