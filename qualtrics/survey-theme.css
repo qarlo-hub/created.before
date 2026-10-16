@@ -1,0 +1,385 @@
+/* ==========================================================================
+   Survey theme — Qualtrics New Survey Taking Experience ("Simple" layout)
+   Where: Survey → Look & Feel → Style → Custom CSS (paste the whole file)
+   Scope: visual only. No question, choice, code or logic is changed.
+   Hooks: Qualtrics theme variables (--*) + type classes on
+          <section class="question {nps|mc|matrix|slider|te|cs|ro|sbs}">.
+   Rollback: delete the content of the Custom CSS field and save.
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   1. Design tokens
+   html:root outranks the :root block Qualtrics injects, whatever the order.
+   -------------------------------------------------------------------------- */
+html:root {
+  /* palette — contrast on white: ink 16.2, graphite 6.6, line 3.4, accent 7.8 */
+  --st-ink: #1C2128;
+  --st-graphite: #555E6B;
+  --st-line: #858D98;          /* control borders, >= 3:1 (WCAG 1.4.11) */
+  --st-divider: #DADDE2;       /* decorative separators only */
+  --st-page: #F3F4F6;
+  --st-paper: #FFFFFF;
+  --st-accent: #14596E;
+  --st-accent-tint: #E5EFF2;   /* selected background */
+  --st-accent-hover: #F1F6F8;  /* hover background */
+  --st-error: #B42318;
+
+  /* type */
+  --st-font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* shape and rhythm */
+  --st-radius: 10px;
+  --st-control-h: 3rem;        /* 48px touch target */
+  --st-question-gap: 2.75rem;
+
+  /* map tokens onto the variables Qualtrics components read */
+  --font-family: var(--st-font);
+  --question-text-size: 1.3125rem;
+  --question-text-weight: 600;
+  --answer-text-size: 1rem;
+  --background-color: var(--st-page);
+  --questions-container-color: var(--st-paper);
+
+  --palettes-text-1: var(--st-ink);
+  --palettes-text-1-on-bg: var(--st-ink);
+  --palettes-text-2: var(--st-graphite);
+  --palettes-text-4: var(--st-graphite);
+  --palettes-neutral-5: var(--st-line);
+  --palettes-neutral-5-on-bg: var(--st-line);
+  --mixes-input-neutral-border-2: var(--st-line);
+  --palettes-error-1: var(--st-error);
+  --palettes-error-1-on-bg: var(--st-error);
+
+  --mixes-primary-1: var(--st-accent);
+  --mixes-primary-2: var(--st-paper);
+  --colors-primary-as-control: var(--st-accent);
+  --colors-primary-as-control-on-bg: var(--st-accent);
+  --colors-primary-as-text: var(--st-accent);
+  --colors-primary-as-text-on-bg: var(--st-accent);
+  --colors-primary-for-focus: var(--st-accent);
+  --colors-primary-for-focus-on-bg: var(--st-accent);
+  --colors-primary-for-hover: var(--st-accent-hover);
+  --colors-primary-for-active: var(--st-accent-tint);
+  --colors-primary-for-selected: var(--st-accent-tint);
+  --colors-primary-for-selected-hover: var(--st-accent-tint);
+  --colors-primary-for-matrix-hover: var(--st-accent-hover);
+  --colors-primary-for-sbs-column-hover: var(--st-accent-hover);
+}
+
+
+/* --------------------------------------------------------------------------
+   2. Page shell: one reading column, left aligned
+   -------------------------------------------------------------------------- */
+body {
+  background: var(--st-page);
+  color: var(--st-ink);
+  font-family: var(--st-font);
+}
+
+#page #survey-canvas {
+  width: auto;
+  max-width: 44rem;
+  margin: 2.5rem auto;
+  padding: 3rem 3.5rem;
+  background: var(--st-paper);
+  border: 1px solid var(--st-divider);
+  border-radius: 14px;
+}
+
+#page .question {
+  margin-bottom: var(--st-question-gap);
+}
+
+#page .question .question-display {
+  max-width: 38rem;
+  margin-bottom: 1.25rem;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--st-ink);
+}
+
+#page .question .question-content {
+  line-height: 1.5;
+}
+
+
+/* --------------------------------------------------------------------------
+   3. NPS and number scale: one continuous segmented scale
+   Cells touch so the scale reads as a single continuum; the selected cell
+   is filled, so the choice never relies on colour alone.
+   -------------------------------------------------------------------------- */
+#page .nps .choices,
+#page .number-scale .buttons {
+  gap: 0;
+}
+
+#page .nps .choices .choice,
+#page .number-scale .buttons .choice {
+  min-width: 0;
+  min-height: var(--st-control-h);
+}
+
+#page .nps .choices .choice .choice-label,
+#page .number-scale .buttons .choice .choice-label {
+  aspect-ratio: auto;
+  height: var(--st-control-h);
+  border: 1px solid var(--st-line);
+  border-left-width: 0;
+  border-radius: 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--st-ink);
+  transition: background-color .12s ease;
+}
+
+#page .nps .choices .choice:first-child .choice-label,
+#page .number-scale .buttons .choice:first-child .choice-label {
+  border-left-width: 1px;
+  border-radius: var(--st-radius) 0 0 var(--st-radius);
+}
+
+#page .nps .choices .choice:last-child .choice-label,
+#page .number-scale .buttons .choice:last-child .choice-label {
+  border-radius: 0 var(--st-radius) var(--st-radius) 0;
+}
+
+#page .nps .choices .choice.selected .choice-label,
+#page .number-scale .buttons .choice.selected .choice-label,
+#page .nps .choices .choice.selected:hover .choice-label,
+#page .number-scale .buttons .choice.selected:hover .choice-label {
+  background: var(--st-accent);
+  border-color: var(--st-accent);
+  color: var(--st-paper);
+  font-weight: 700;
+}
+
+#page .nps .choices .choice.focused .choice-label,
+#page .number-scale .buttons .choice.focused .choice-label {
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 0 3px var(--st-paper), 0 0 0 5px var(--st-accent);
+}
+
+#page .nps .column-label-container {
+  padding: 0 0 .5rem;
+  font-size: .875rem;
+  color: var(--st-graphite);
+}
+
+
+/* --------------------------------------------------------------------------
+   4. Single answer (mc): full-width option rows
+   -------------------------------------------------------------------------- */
+/* vertical single-column layout only; horizontal and columnar keep their grid */
+#page .mc.vertical .choices:not(.columnar) {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  width: 100%;
+  max-width: 38rem;
+}
+
+#page .mc.vertical .choices:not(.columnar) .choice {
+  margin-bottom: 0;
+}
+
+#page .mc .choice .choice-label {
+  min-height: 3.25rem;
+  padding: .75rem 1rem;
+  border: 1px solid var(--st-line);
+  border-radius: var(--st-radius);
+  align-items: center;
+}
+
+#page .mc .choice.selected .choice-label,
+#page .mc .choice.selected:hover .choice-label {
+  background: var(--st-accent-tint);
+  border-color: var(--st-accent);
+  box-shadow: inset 0 0 0 1px var(--st-accent);
+}
+
+#page .mc .choice.focused .choice-label {
+  box-shadow: 0 0 0 3px var(--st-paper), 0 0 0 5px var(--st-accent);
+}
+
+
+/* --------------------------------------------------------------------------
+   5. Matrix and side by side (desktop table; Qualtrics turns them into
+   accordions on phones, which is kept)
+   -------------------------------------------------------------------------- */
+#page .matrix .matrix-scale-points-item,
+#page .sbs .sbs-scale-point,
+#page .sbs .column-header-wrapper {
+  color: var(--st-graphite);
+  font-size: .875rem;
+}
+
+#page .matrix .matrix-row {
+  border-top: 1px solid var(--st-divider);
+}
+
+#page .matrix .matrix-statement-header,
+#page .sbs .sbs-statement {
+  color: var(--st-ink);
+}
+
+
+/* --------------------------------------------------------------------------
+   6. Slider: thicker track; an untouched slider looks unanswered, not "0"
+   -------------------------------------------------------------------------- */
+#page .slider .slider-statement {
+  margin-bottom: 1.25rem;
+}
+
+#page .slider .slider-value {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--st-ink);
+}
+
+#page .slider .unanswered .slider-value::after {
+  content: "–";
+  color: var(--st-graphite);
+  font-weight: 400;
+}
+
+#page .slider .unanswered .slider-range-container input[type=range]::-webkit-slider-thumb {
+  border-style: dashed;
+  border-width: 2px;
+}
+
+#page .slider .unanswered .slider-range-container input[type=range]::-moz-range-thumb {
+  border-style: dashed;
+  border-width: 2px;
+}
+
+
+/* --------------------------------------------------------------------------
+   7. Text entry and numeric inputs
+   -------------------------------------------------------------------------- */
+#page .question .text-input {
+  background: var(--st-paper);
+  border: 1px solid var(--st-line);
+  border-radius: var(--st-radius);
+  color: var(--st-ink);
+  font: inherit;
+}
+
+#page .te .resize-wrapper {
+  width: 100%;
+}
+
+#page .te .text-input.multi-line {
+  width: 100%;
+  min-height: 8rem;
+  padding: .75rem 1rem;
+  line-height: 1.5;
+}
+
+#page .question .text-input:focus {
+  outline: 2px solid var(--st-accent);
+  outline-offset: 2px;
+  border-color: var(--st-accent);
+}
+
+#page .cs .text-input {
+  width: 6rem;
+  min-height: var(--st-control-h);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  padding: 0 .75rem;
+}
+
+#page .cs .total-outer {
+  font-weight: 600;
+}
+
+
+/* --------------------------------------------------------------------------
+   8. Rank order: rows aligned with single-answer options
+   -------------------------------------------------------------------------- */
+#page .ro .draggable-list {
+  width: 100%;
+  max-width: 38rem;
+}
+
+#page .ro .draggable-list-item .item-wrapper {
+  flex: 1;
+  min-height: 3.25rem;
+  border: 1px solid var(--st-line);
+  border-radius: var(--st-radius);
+  background: var(--st-paper);
+}
+
+#page .ro .item-rank-number {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+
+/* --------------------------------------------------------------------------
+   9. Navigation
+   -------------------------------------------------------------------------- */
+#page #navigation .navigation-button {
+  min-height: var(--st-control-h);
+  padding: 0 1.5rem;
+  border-radius: var(--st-radius);
+  background: var(--st-accent);
+  color: var(--st-paper);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+#page #navigation .navigation-button:focus-visible {
+  outline: 2px solid var(--st-accent);
+  outline-offset: 3px;
+}
+
+/* align the button with the question column (questions sit 1.5rem deeper) */
+@media (min-width: 30rem) {
+  #page #navigation {
+    padding-inline: 3rem;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   10. Phones (Qualtrics' own breakpoint: 30rem)
+   -------------------------------------------------------------------------- */
+@media (max-width: 30rem) {
+  html:root {
+    --question-text-size: 1.1875rem;
+    --st-question-gap: 2.25rem;
+    --background-color: var(--st-paper);
+  }
+
+  body {
+    background: var(--st-paper);
+  }
+
+  /* Qualtrics already pads each question and the navigation by 1rem */
+  #page #survey-canvas {
+    margin: 0;
+    padding: 1.5rem 0 2rem;
+    border: 0;
+    border-radius: 0;
+  }
+
+  #page .nps .choices .choice .choice-label,
+  #page .number-scale .buttons .choice .choice-label {
+    font-size: .9375rem;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   11. Motion
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  #page *,
+  #page *::before,
+  #page *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
