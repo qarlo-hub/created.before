@@ -5,6 +5,8 @@
    Hooks: Qualtrics theme variables (--*) + type classes on
           <section class="question {nps|mc|matrix|slider|te|cs|ro|sbs}">.
    Rollback: delete the content of the Custom CSS field and save.
+   Note: this is the readable source. Paste survey-theme.qualtrics.css
+         (built by build.py) into Qualtrics, not this file.
    ========================================================================== */
 
 
@@ -214,13 +216,37 @@ body {
   font-size: .875rem;
 }
 
-#page .matrix .matrix-row {
-  border-top: 1px solid var(--st-divider);
+/* statement column: Qualtrics gives it 23%, too narrow for real statements
+   in a 44rem column; bipolar and statements-above layouts are left alone */
+#page .matrix.table:not(.bipolar) .matrix-table:not(.statements-above) .matrix-content {
+  grid-template-columns: minmax(9rem, 40%) 1fr;
+}
+
+#page .sbs .column-header-wrapper .choice-content {
+  display: block;
+  white-space: normal;
+  text-align: center;
 }
 
 #page .matrix .matrix-statement-header,
 #page .sbs .sbs-statement {
   color: var(--st-ink);
+}
+
+
+/* --------------------------------------------------------------------------
+   5b. Text / graphic (db): section intro, not a question
+   -------------------------------------------------------------------------- */
+#page .db {
+  padding-top: 2rem;
+  border-top: 1px solid var(--st-divider);
+}
+
+#page .db .question-display {
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--st-graphite);
 }
 
 
@@ -238,7 +264,7 @@ body {
 }
 
 #page .slider .unanswered .slider-value::after {
-  content: "–";
+  content: "\2013";  /* en dash */
   color: var(--st-graphite);
   font-weight: 400;
 }
@@ -349,8 +375,11 @@ body {
 @media (max-width: 30rem) {
   html:root {
     --question-text-size: 1.1875rem;
-    --st-question-gap: 2.25rem;
     --background-color: var(--st-paper);
+  }
+
+  #page .question {
+    margin-bottom: 2.25rem;
   }
 
   body {

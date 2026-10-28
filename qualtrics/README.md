@@ -5,18 +5,26 @@ Non modifica domande, opzioni, codici di risposta, logiche, validazioni né la s
 
 | File | Cosa contiene |
 |---|---|
-| `survey-theme.css` | L'intero tema da incollare in Qualtrics |
+| `survey-theme.qualtrics.css` | **Il file da incollare in Qualtrics** (generato, senza `var()` né commenti) |
+| `survey-theme.css` | Sorgente leggibile e commentata: si modifica solo questo |
+| `build.py` | Rigenera `survey-theme.qualtrics.css` dal sorgente (`python3 build.py`) |
 | `tests/visual-check.js` | Test: screenshot a 1280/390/320 px e audit di accessibilità axe sulla pagina reale |
 
 ## 1. Installazione
 
 1. Apri la survey → **Look & Feel** (icona del pennello) → **Style**.
-2. Nel campo **Custom CSS** incolla tutto il contenuto di `survey-theme.css`.
+2. Nel campo **Custom CSS** cancella il contenuto precedente e incolla **tutto** `survey-theme.qualtrics.css`.
 3. **Save**, poi **Preview** su desktop e su smartphone.
 4. Lingua (decisa: italiano): **Survey options → Language** (o *Translate survey*), lingua principale = **Italiano**.
    Così i testi di sistema (pulsante, messaggi di errore) e l'attributo `lang` della pagina passano in italiano.
 
 **Rollback:** svuota il campo Custom CSS e salva. Nessun'altra impostazione viene toccata.
+
+> **Perché un file generato.** Al primo tentativo (28/10/2026) Qualtrics ha salvato solo i primi 1.599 caratteri del sorgente.
+> Il testo si interrompeva esattamente prima del primo `var(...)`, quindi quasi tutto il tema era inattivo; anche il testo `<section …>` nei commenti era stato rimosso.
+> La causa più probabile è il filtro di sicurezza del campo, ma non è documentata, quindi è un'ipotesi.
+> Il file generato elimina tutti i possibili inneschi (nessun `var()`, nessun `<` o `>`, nessun commento, solo ASCII).
+> **Controllo dopo il salvataggio:** l'ultima riga del campo deve essere la `}` finale della regola `prefers-reduced-motion`.
 
 ## 2. Design system
 
@@ -62,13 +70,16 @@ L'unico elemento distintivo è la **scala segmentata** (NPS e scale numeriche), 
 | Q3 | Testo su più righe | Campo grigio e stretto | Campo bianco a tutta larghezza, alto 8rem, focus evidente | Nessuno |
 | Q10 | Somma costante | Numeri allineati a sinistra | Allineamento a destra con cifre a larghezza fissa, totale in grassetto | Nessuno |
 | Q7 | Ranking | Elementi stretti | Righe a tutta larghezza allineate alle opzioni di Q2. Il riordino da tastiera nativo resta | Nessuno |
-| Q5, Q8 | Matrice, side by side | — | Solo colori ed etichette; la fisarmonica nativa su mobile resta | Nessuno |
-| Q13 | Drop-down | Nessuna risposta configurata | **Esclusa** su tua indicazione | — |
+| Q5 | Matrice | Con testi reali la colonna delle affermazioni (23%) andava a capo fino a 5 righe | Colonna delle affermazioni al 40% (min 9rem); la fisarmonica nativa su mobile resta | Nessuno |
+| Q8 | Side by side | Intestazioni lunghe | Intestazioni di colonna che vanno a capo; fisarmonica nativa su mobile | Nessuno |
+| Q4 | Testo descrittivo | Aveva lo stesso peso visivo di una domanda | Introduzione di sezione: filetto sopra, testo normale grigio grafite | Nessuno |
+| Q13 | Drill-down (anno, marca, modello) | — | Nessuno stile dedicato; verificato che la selezione a cascata funzioni con il tema | Nessuno |
 | Pulsante | Navigazione | — | 48 px, colore d'accento, allineato alla colonna delle domande | — |
 
 ## 5. Verifica
 
-Eseguita il 16/10/2026 sulla survey pubblicata (sandbox), iniettando il CSS nella pagina reale con Chromium.
+Eseguita il 16/10/2026 sulla survey di prova e ripetuta il 28/10/2026 sulla versione con i testi reali
+(`SV_0qWGJutGePeHFT8`, sandbox), iniettando `survey-theme.qualtrics.css` nella pagina reale con Chromium.
 **Non è stata inviata nessuna risposta.**
 
 | Controllo | Prima | Dopo |
@@ -81,6 +92,7 @@ Eseguita il 16/10/2026 sulla survey pubblicata (sandbox), iniettando il CSS nell
 | Pulsante Avanti | 44 px | 48 px |
 | Selezione registrata nell'input nativo (NPS, scelta singola, scala, slider) | sì | sì |
 | axe-core 4.10, tag WCAG 2.0/2.1/2.2 A-AA | 0 violazioni | 0 violazioni |
+| Drill-down Q13: la scelta del 1° livello abilita il 2° | sì | sì |
 
 Per ripetere il test:
 
@@ -106,10 +118,11 @@ node tests/visual-check.js "<link della survey>" none ./out-before        # prim
   Il tema si degrada in modo sicuro (si torna allo stile Qualtrics, le risposte funzionano comunque). Dopo ogni aggiornamento Qualtrics, ripeti il test.
 - Il trattino "–" dello slider non toccato è solo visivo: i lettori di schermo non lo annunciano.
 - Il layout delle scelte singole orizzontali o a colonne non è stato ridisegnato (non presente nella survey).
+- Side by side su desktop: con intestazioni lunghe la tabella può superare di circa 20 px il margine destro della colonna. È così anche senza tema (comportamento nativo).
 - Il tema di brand dell'organizzazione potrebbe bloccare il campo Custom CSS in altri ambienti: è stato verificato solo sulla sandbox.
 
 ## 7. Manutenzione
 
-- Per cambiare colore o dimensioni modifica **solo i token** nella sezione 1 del CSS: tutto il resto li richiama.
+- Per cambiare colore o dimensioni modifica **solo i token** nella sezione 1 di `survey-theme.css`, poi esegui `python3 build.py` e incolla di nuovo il file generato.
 - Per un nuovo tipo di domanda aggiungi una sezione limitata alla sua classe (`#page .{tipo} …`), senza regole globali.
 - Interventi in sospeso, su tua indicazione: correzioni P0 (Q13, vincolo totale = 100 in Q10, ricodifica di "idk" in Q5, testo segnaposto di Q4), interruzioni di pagina, testi definitivi.
