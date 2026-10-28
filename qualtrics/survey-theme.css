@@ -15,14 +15,16 @@
    html:root outranks the :root block Qualtrics injects, whatever the order.
    -------------------------------------------------------------------------- */
 html:root {
-  /* palette — contrast on white: ink 16.2, graphite 6.6, line 3.4, accent 5.4 */
+  /* palette — contrast on white: ink 16.2, graphite 6.6, line 3.4, accent 3.1 (UI), accent-text 5.4 */
   --st-ink: #1C2128;
   --st-graphite: #555E6B;
   --st-line: #858D98;          /* control borders, >= 3:1 (WCAG 1.4.11) */
   --st-divider: #DADDE2;       /* decorative separators only */
   --st-page: #F3F6F8;
   --st-paper: #FFFFFF;
-  --st-accent: #0E7490;        /* cyan, between azure and aqua: text, fills, focus */
+  --st-accent: #0E9FBF;        /* bright cyan: fills, borders, focus (3.1:1, UI only) */
+  --st-accent-text: #0E7490;   /* darker cyan for text in the accent colour (5.4:1) */
+  --st-on-accent: #1C2128;     /* text on accent fills: ink, 5.2:1 (white would be 3.1) */
   --st-accent-tint: #E6F6F8;   /* selected background */
   --st-accent-hover: #F1FAFB;  /* hover background */
   --st-error: #B42318;
@@ -57,8 +59,8 @@ html:root {
   --mixes-primary-2: var(--st-paper);
   --colors-primary-as-control: var(--st-accent);
   --colors-primary-as-control-on-bg: var(--st-accent);
-  --colors-primary-as-text: var(--st-accent);
-  --colors-primary-as-text-on-bg: var(--st-accent);
+  --colors-primary-as-text: var(--st-accent-text);
+  --colors-primary-as-text-on-bg: var(--st-accent-text);
   --colors-primary-for-focus: var(--st-accent);
   --colors-primary-for-focus-on-bg: var(--st-accent);
   --colors-primary-for-hover: var(--st-accent-hover);
@@ -151,7 +153,7 @@ body {
 #page .number-scale .buttons .choice.selected:hover .choice-label {
   background: var(--st-accent);
   border-color: var(--st-accent);
-  color: var(--st-paper);
+  color: var(--st-on-accent);
   font-weight: 700;
 }
 
@@ -391,7 +393,7 @@ body {
   padding: 0 1.5rem;
   border-radius: var(--st-radius);
   background: var(--st-accent);
-  color: var(--st-paper);
+  color: var(--st-on-accent);
   font-size: 1rem;
   font-weight: 600;
 }

@@ -15,14 +15,14 @@ html:root {
   --mixes-input-neutral-border-2: #858D98;
   --palettes-error-1: #B42318;
   --palettes-error-1-on-bg: #B42318;
-  --mixes-primary-1: #0E7490;
+  --mixes-primary-1: #0E9FBF;
   --mixes-primary-2: #FFFFFF;
-  --colors-primary-as-control: #0E7490;
-  --colors-primary-as-control-on-bg: #0E7490;
+  --colors-primary-as-control: #0E9FBF;
+  --colors-primary-as-control-on-bg: #0E9FBF;
   --colors-primary-as-text: #0E7490;
   --colors-primary-as-text-on-bg: #0E7490;
-  --colors-primary-for-focus: #0E7490;
-  --colors-primary-for-focus-on-bg: #0E7490;
+  --colors-primary-for-focus: #0E9FBF;
+  --colors-primary-for-focus-on-bg: #0E9FBF;
   --colors-primary-for-hover: #F1FAFB;
   --colors-primary-for-active: #E6F6F8;
   --colors-primary-for-selected: #E6F6F8;
@@ -90,16 +90,16 @@ body {
 #page .number-scale .buttons .choice.selected .choice-label,
 #page .nps .choices .choice.selected:hover .choice-label,
 #page .number-scale .buttons .choice.selected:hover .choice-label {
-  background: #0E7490;
-  border-color: #0E7490;
-  color: #FFFFFF;
+  background: #0E9FBF;
+  border-color: #0E9FBF;
+  color: #1C2128;
   font-weight: 700;
 }
 #page .nps .choices .choice.focused .choice-label,
 #page .number-scale .buttons .choice.focused .choice-label {
   position: relative;
   z-index: 1;
-  box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 5px #0E7490;
+  box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 5px #0E9FBF;
 }
 @supports selector(:has(*)) {
   #page .nps .choices .choice.focused .choice-label,
@@ -108,7 +108,7 @@ body {
   }
   #page .nps .choices .choice:has(input:focus-visible) .choice-label,
   #page .number-scale .buttons .choice:has(input:focus-visible) .choice-label {
-    box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 5px #0E7490;
+    box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 5px #0E9FBF;
   }
 }
 #page .nps .column-label-container {
@@ -136,27 +136,27 @@ body {
 #page .mc .choice.selected .choice-label,
 #page .mc .choice.selected:hover .choice-label {
   background: #E6F6F8;
-  border-color: #0E7490;
-  box-shadow: inset 0 0 0 1px #0E7490;
+  border-color: #0E9FBF;
+  box-shadow: inset 0 0 0 1px #0E9FBF;
 }
 #page .mc .choice.focused .choice-label {
-  box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 5px #0E7490;
+  box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 5px #0E9FBF;
 }
 #page .mc .choice.selected.focused .choice-label {
-  box-shadow: inset 0 0 0 1px #0E7490, 0 0 0 3px #FFFFFF, 0 0 0 5px #0E7490;
+  box-shadow: inset 0 0 0 1px #0E9FBF, 0 0 0 3px #FFFFFF, 0 0 0 5px #0E9FBF;
 }
 @supports selector(:has(*)) {
   #page .mc .choice.focused .choice-label {
     box-shadow: none;
   }
   #page .mc .choice.selected.focused .choice-label {
-    box-shadow: inset 0 0 0 1px #0E7490;
+    box-shadow: inset 0 0 0 1px #0E9FBF;
   }
   #page .mc .choice:has(input:focus-visible) .choice-label {
-    box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 5px #0E7490;
+    box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 5px #0E9FBF;
   }
   #page .mc .choice.selected:has(input:focus-visible) .choice-label {
-    box-shadow: inset 0 0 0 1px #0E7490, 0 0 0 3px #FFFFFF, 0 0 0 5px #0E7490;
+    box-shadow: inset 0 0 0 1px #0E9FBF, 0 0 0 3px #FFFFFF, 0 0 0 5px #0E9FBF;
   }
 }
 #page .matrix .matrix-scale-points-item,
@@ -226,8 +226,8 @@ body {
 }
 #page .question .text-input:focus {
   outline: none;
-  border-color: #0E7490;
-  box-shadow: inset 0 0 0 1px #0E7490;
+  border-color: #0E9FBF;
+  box-shadow: inset 0 0 0 1px #0E9FBF;
 }
 #page .cs .text-input {
   width: 6rem;
@@ -258,13 +258,13 @@ body {
   min-height: 3rem;
   padding: 0 1.5rem;
   border-radius: 10px;
-  background: #0E7490;
-  color: #FFFFFF;
+  background: #0E9FBF;
+  color: #1C2128;
   font-size: 1rem;
   font-weight: 600;
 }
 #page #navigation .navigation-button:focus-visible {
-  outline: 2px solid #0E7490;
+  outline: 2px solid #0E9FBF;
   outline-offset: 3px;
 }
 @media (min-width: 30rem) {

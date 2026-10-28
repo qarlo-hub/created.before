@@ -37,7 +37,9 @@ L'unico elemento distintivo è la **scala segmentata** (NPS e scale numeriche), 
 | `--st-graphite` | `#555E6B` | Testo secondario, etichette | 6,6:1 |
 | `--st-line` | `#858D98` | Bordi dei controlli | 3,4:1 (≥ 3:1, WCAG 1.4.11) |
 | `--st-divider` | `#DADDE2` | Separatori decorativi | — |
-| `--st-accent` | `#0E7490` | Selezione, focus, pulsante (ciano) | 5,4:1 (testo bianco sul pieno 5,4:1) |
+| `--st-accent` | `#0E9FBF` | Celle scelte, bordi selezionati, focus, pulsante (ciano chiaro) | 3,1:1: sufficiente per controlli e bordi, non per il testo |
+| `--st-on-accent` | `#1C2128` | Testo sopra il ciano pieno (numero scelto, pulsante) | 5,2:1 (il bianco sarebbe 3,1:1) |
+| `--st-accent-text` | `#0E7490` | Testo nel colore d'accento (link, pulsanti secondari) | 5,4:1 |
 | `--st-accent-tint` | `#E6F6F8` | Sfondo dell'opzione selezionata | testo 14,6:1 |
 | `--st-accent-hover` | `#F1FAFB` | Sfondo al passaggio del mouse | — |
 | `--st-page` / `--st-paper` | `#F3F6F8` / `#FFFFFF` | Sfondo pagina / colonna | — |
