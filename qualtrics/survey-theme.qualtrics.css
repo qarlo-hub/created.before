@@ -4,7 +4,7 @@ html:root {
   --question-text-size: 1.3125rem;
   --question-text-weight: 600;
   --answer-text-size: 1rem;
-  --background-color: #F3F4F6;
+  --background-color: #F3F6F8;
   --questions-container-color: #FFFFFF;
   --palettes-text-1: #1C2128;
   --palettes-text-1-on-bg: #1C2128;
@@ -15,23 +15,23 @@ html:root {
   --mixes-input-neutral-border-2: #858D98;
   --palettes-error-1: #B42318;
   --palettes-error-1-on-bg: #B42318;
-  --mixes-primary-1: #046A38;
+  --mixes-primary-1: #0E7490;
   --mixes-primary-2: #FFFFFF;
-  --colors-primary-as-control: #046A38;
-  --colors-primary-as-control-on-bg: #046A38;
-  --colors-primary-as-text: #046A38;
-  --colors-primary-as-text-on-bg: #046A38;
-  --colors-primary-for-focus: #046A38;
-  --colors-primary-for-focus-on-bg: #046A38;
-  --colors-primary-for-hover: #F4F9EE;
-  --colors-primary-for-active: #EAF3E0;
-  --colors-primary-for-selected: #EAF3E0;
-  --colors-primary-for-selected-hover: #EAF3E0;
-  --colors-primary-for-matrix-hover: #F4F9EE;
-  --colors-primary-for-sbs-column-hover: #F4F9EE;
+  --colors-primary-as-control: #0E7490;
+  --colors-primary-as-control-on-bg: #0E7490;
+  --colors-primary-as-text: #0E7490;
+  --colors-primary-as-text-on-bg: #0E7490;
+  --colors-primary-for-focus: #0E7490;
+  --colors-primary-for-focus-on-bg: #0E7490;
+  --colors-primary-for-hover: #F1FAFB;
+  --colors-primary-for-active: #E6F6F8;
+  --colors-primary-for-selected: #E6F6F8;
+  --colors-primary-for-selected-hover: #E6F6F8;
+  --colors-primary-for-matrix-hover: #F1FAFB;
+  --colors-primary-for-sbs-column-hover: #F1FAFB;
 }
 body {
-  background: #F3F4F6;
+  background: #F3F6F8;
   color: #1C2128;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
@@ -90,21 +90,26 @@ body {
 #page .number-scale .buttons .choice.selected .choice-label,
 #page .nps .choices .choice.selected:hover .choice-label,
 #page .number-scale .buttons .choice.selected:hover .choice-label {
-  background: #046A38;
-  border-color: #046A38;
+  background: #0E7490;
+  border-color: #0E7490;
   color: #FFFFFF;
   font-weight: 700;
-  box-shadow: inset 0 -4px 0 #86BC25;
 }
 #page .nps .choices .choice.focused .choice-label,
 #page .number-scale .buttons .choice.focused .choice-label {
   position: relative;
   z-index: 1;
-  box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 5px #046A38;
+  box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 5px #0E7490;
 }
-#page .nps .choices .choice.selected.focused .choice-label,
-#page .number-scale .buttons .choice.selected.focused .choice-label {
-  box-shadow: inset 0 -4px 0 #86BC25, 0 0 0 3px #FFFFFF, 0 0 0 5px #046A38;
+@supports selector(:has(*)) {
+  #page .nps .choices .choice.focused .choice-label,
+  #page .number-scale .buttons .choice.focused .choice-label {
+    box-shadow: none;
+  }
+  #page .nps .choices .choice:has(input:focus-visible) .choice-label,
+  #page .number-scale .buttons .choice:has(input:focus-visible) .choice-label {
+    box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 5px #0E7490;
+  }
 }
 #page .nps .column-label-container {
   padding: 0 0 .5rem;
@@ -130,12 +135,29 @@ body {
 }
 #page .mc .choice.selected .choice-label,
 #page .mc .choice.selected:hover .choice-label {
-  background: #EAF3E0;
-  border-color: #046A38;
-  box-shadow: inset 0 0 0 1px #046A38, inset 6px 0 0 #86BC25;
+  background: #E6F6F8;
+  border-color: #0E7490;
+  box-shadow: inset 0 0 0 1px #0E7490;
 }
 #page .mc .choice.focused .choice-label {
-  box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 5px #046A38;
+  box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 5px #0E7490;
+}
+#page .mc .choice.selected.focused .choice-label {
+  box-shadow: inset 0 0 0 1px #0E7490, 0 0 0 3px #FFFFFF, 0 0 0 5px #0E7490;
+}
+@supports selector(:has(*)) {
+  #page .mc .choice.focused .choice-label {
+    box-shadow: none;
+  }
+  #page .mc .choice.selected.focused .choice-label {
+    box-shadow: inset 0 0 0 1px #0E7490;
+  }
+  #page .mc .choice:has(input:focus-visible) .choice-label {
+    box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 5px #0E7490;
+  }
+  #page .mc .choice.selected:has(input:focus-visible) .choice-label {
+    box-shadow: inset 0 0 0 1px #0E7490, 0 0 0 3px #FFFFFF, 0 0 0 5px #0E7490;
+  }
 }
 #page .matrix .matrix-scale-points-item,
 #page .sbs .sbs-scale-point,
@@ -203,9 +225,9 @@ body {
   line-height: 1.5;
 }
 #page .question .text-input:focus {
-  outline: 2px solid #046A38;
-  outline-offset: 2px;
-  border-color: #046A38;
+  outline: none;
+  border-color: #0E7490;
+  box-shadow: inset 0 0 0 1px #0E7490;
 }
 #page .cs .text-input {
   width: 6rem;
@@ -236,13 +258,13 @@ body {
   min-height: 3rem;
   padding: 0 1.5rem;
   border-radius: 10px;
-  background: #046A38;
+  background: #0E7490;
   color: #FFFFFF;
   font-size: 1rem;
   font-weight: 600;
 }
 #page #navigation .navigation-button:focus-visible {
-  outline: 2px solid #046A38;
+  outline: 2px solid #0E7490;
   outline-offset: 3px;
 }
 @media (min-width: 30rem) {

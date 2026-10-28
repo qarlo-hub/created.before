@@ -28,7 +28,7 @@ Non modifica domande, opzioni, codici di risposta, logiche, validazioni né la s
 
 ## 2. Design system
 
-**Direzione:** sobria e neutra, accento nei verdi Deloitte (verde scuro per testi e controlli, verde brillante solo come dettaglio decorativo), nessuna altra decorazione.
+**Direzione:** sobria e fresca: un solo accento ciano, tra l'azzurro e il verde acqua, su grigi freddi. Nessuna decorazione.
 L'unico elemento distintivo è la **scala segmentata** (NPS e scale numeriche), che rende visibile il continuum della scala.
 
 | Token | Valore | Uso | Contrasto su bianco |
@@ -37,10 +37,10 @@ L'unico elemento distintivo è la **scala segmentata** (NPS e scale numeriche), 
 | `--st-graphite` | `#555E6B` | Testo secondario, etichette | 6,6:1 |
 | `--st-line` | `#858D98` | Bordi dei controlli | 3,4:1 (≥ 3:1, WCAG 1.4.11) |
 | `--st-divider` | `#DADDE2` | Separatori decorativi | — |
-| `--st-accent` | `#046A38` | Selezione, focus, pulsante (verde scuro Deloitte) | 6,7:1 |
-| `--st-brand` | `#86BC25` | Solo decorativo: barretta sotto la cella scelta della scala e a sinistra dell'opzione scelta | 2,3:1 (insufficiente per testo e bordi, quindi non usato per questi) |
-| `--st-accent-tint` | `#EAF3E0` | Sfondo dell'opzione selezionata | testo 14,2:1 |
-| `--st-page` / `--st-paper` | `#F3F4F6` / `#FFFFFF` | Sfondo pagina / colonna | — |
+| `--st-accent` | `#0E7490` | Selezione, focus, pulsante (ciano) | 5,4:1 (testo bianco sul pieno 5,4:1) |
+| `--st-accent-tint` | `#E6F6F8` | Sfondo dell'opzione selezionata | testo 14,6:1 |
+| `--st-accent-hover` | `#F1FAFB` | Sfondo al passaggio del mouse | — |
+| `--st-page` / `--st-paper` | `#F3F6F8` / `#FFFFFF` | Sfondo pagina / colonna | — |
 | `--st-error` | `#B42318` | Errori | 6,6:1 |
 
 - **Tipografia:** font di sistema (`system-ui`: SF Pro su iOS/macOS, Roboto su Android, Segoe UI su Windows).
@@ -48,7 +48,8 @@ L'unico elemento distintivo è la **scala segmentata** (NPS e scale numeriche), 
 - **Layout:** una colonna di lettura allineata a sinistra, larghezza massima 44rem; su smartphone tutto lo schermo, senza riquadro.
 - **Controlli:** altezza 48 px, raggio 10 px. Lo stato selezionato usa sempre due segnali, colore più forma
   (riempimento o bordo doppio, pallino del radio), quindi non dipende solo dal colore.
-- **Focus:** anello di 2 px nel colore d'accento con 3 px di stacco, visibile su tutti i controlli.
+- **Focus:** sulle scelte (NPS, scale, opzioni) l'anello esterno di 2 px compare **solo con la tastiera** (`:focus-visible`); con il mouse o il tocco la cella scelta resta di un solo colore. I browser senza `:has()` mostrano l'anello sempre, così chi usa la tastiera non lo perde mai.
+  Campi di testo e menu a tendina: un unico bordo di 2 px nel colore d'accento, senza contorno esterno.
 - **Movimento:** solo transizioni di colore di 0,12 s; tutte disattivate con `prefers-reduced-motion`.
 
 ## 3. Come funziona (perché è robusto)

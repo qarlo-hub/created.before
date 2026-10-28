@@ -15,17 +15,16 @@
    html:root outranks the :root block Qualtrics injects, whatever the order.
    -------------------------------------------------------------------------- */
 html:root {
-  /* palette — contrast on white: ink 16.2, graphite 6.6, line 3.4, accent 6.7 */
+  /* palette — contrast on white: ink 16.2, graphite 6.6, line 3.4, accent 5.4 */
   --st-ink: #1C2128;
   --st-graphite: #555E6B;
   --st-line: #858D98;          /* control borders, >= 3:1 (WCAG 1.4.11) */
   --st-divider: #DADDE2;       /* decorative separators only */
-  --st-page: #F3F4F6;
+  --st-page: #F3F6F8;
   --st-paper: #FFFFFF;
-  --st-accent: #046A38;        /* Deloitte dark green: text, fills, focus */
-  --st-brand: #86BC25;         /* Deloitte green: decorative only (2.3:1, never text or boundary) */
-  --st-accent-tint: #EAF3E0;   /* selected background */
-  --st-accent-hover: #F4F9EE;  /* hover background */
+  --st-accent: #0E7490;        /* cyan, between azure and aqua: text, fills, focus */
+  --st-accent-tint: #E6F6F8;   /* selected background */
+  --st-accent-hover: #F1FAFB;  /* hover background */
   --st-error: #B42318;
 
   /* type */
@@ -154,9 +153,12 @@ body {
   border-color: var(--st-accent);
   color: var(--st-paper);
   font-weight: 700;
-  box-shadow: inset 0 -4px 0 var(--st-brand);
 }
 
+/* Focus ring. Qualtrics marks a choice .focused on mouse clicks too, which
+   drew a ring around every clicked cell. Where :has() is supported the ring
+   is shown for keyboard focus only (:focus-visible); older browsers keep it
+   always, so keyboard users never lose it. */
 #page .nps .choices .choice.focused .choice-label,
 #page .number-scale .buttons .choice.focused .choice-label {
   position: relative;
@@ -164,9 +166,16 @@ body {
   box-shadow: 0 0 0 3px var(--st-paper), 0 0 0 5px var(--st-accent);
 }
 
-#page .nps .choices .choice.selected.focused .choice-label,
-#page .number-scale .buttons .choice.selected.focused .choice-label {
-  box-shadow: inset 0 -4px 0 var(--st-brand), 0 0 0 3px var(--st-paper), 0 0 0 5px var(--st-accent);
+@supports selector(:has(*)) {
+  #page .nps .choices .choice.focused .choice-label,
+  #page .number-scale .buttons .choice.focused .choice-label {
+    box-shadow: none;
+  }
+
+  #page .nps .choices .choice:has(input:focus-visible) .choice-label,
+  #page .number-scale .buttons .choice:has(input:focus-visible) .choice-label {
+    box-shadow: 0 0 0 3px var(--st-paper), 0 0 0 5px var(--st-accent);
+  }
 }
 
 #page .nps .column-label-container {
@@ -204,11 +213,34 @@ body {
 #page .mc .choice.selected:hover .choice-label {
   background: var(--st-accent-tint);
   border-color: var(--st-accent);
-  box-shadow: inset 0 0 0 1px var(--st-accent), inset 6px 0 0 var(--st-brand);
+  box-shadow: inset 0 0 0 1px var(--st-accent);
 }
 
+/* same keyboard-only focus ring as the scales (see section 3) */
 #page .mc .choice.focused .choice-label {
   box-shadow: 0 0 0 3px var(--st-paper), 0 0 0 5px var(--st-accent);
+}
+
+#page .mc .choice.selected.focused .choice-label {
+  box-shadow: inset 0 0 0 1px var(--st-accent), 0 0 0 3px var(--st-paper), 0 0 0 5px var(--st-accent);
+}
+
+@supports selector(:has(*)) {
+  #page .mc .choice.focused .choice-label {
+    box-shadow: none;
+  }
+
+  #page .mc .choice.selected.focused .choice-label {
+    box-shadow: inset 0 0 0 1px var(--st-accent);
+  }
+
+  #page .mc .choice:has(input:focus-visible) .choice-label {
+    box-shadow: 0 0 0 3px var(--st-paper), 0 0 0 5px var(--st-accent);
+  }
+
+  #page .mc .choice.selected:has(input:focus-visible) .choice-label {
+    box-shadow: inset 0 0 0 1px var(--st-accent), 0 0 0 3px var(--st-paper), 0 0 0 5px var(--st-accent);
+  }
 }
 
 
@@ -309,10 +341,11 @@ body {
   line-height: 1.5;
 }
 
+/* focus = one 2px accent border (border + 1px inset ring), no outer outline */
 #page .question .text-input:focus {
-  outline: 2px solid var(--st-accent);
-  outline-offset: 2px;
+  outline: none;
   border-color: var(--st-accent);
+  box-shadow: inset 0 0 0 1px var(--st-accent);
 }
 
 #page .cs .text-input {
