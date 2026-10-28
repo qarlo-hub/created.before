@@ -28,7 +28,7 @@ Non modifica domande, opzioni, codici di risposta, logiche, validazioni né la s
 
 ## 2. Design system
 
-**Direzione:** sobria e neutra, un solo colore d'accento ("ottanio"), nessuna decorazione.
+**Direzione:** sobria e neutra, accento nei verdi Deloitte (verde scuro per testi e controlli, verde brillante solo come dettaglio decorativo), nessuna altra decorazione.
 L'unico elemento distintivo è la **scala segmentata** (NPS e scale numeriche), che rende visibile il continuum della scala.
 
 | Token | Valore | Uso | Contrasto su bianco |
@@ -37,8 +37,9 @@ L'unico elemento distintivo è la **scala segmentata** (NPS e scale numeriche), 
 | `--st-graphite` | `#555E6B` | Testo secondario, etichette | 6,6:1 |
 | `--st-line` | `#858D98` | Bordi dei controlli | 3,4:1 (≥ 3:1, WCAG 1.4.11) |
 | `--st-divider` | `#DADDE2` | Separatori decorativi | — |
-| `--st-accent` | `#14596E` | Selezione, focus, pulsante | 7,8:1 |
-| `--st-accent-tint` | `#E5EFF2` | Sfondo dell'opzione selezionata | testo 13,8:1 |
+| `--st-accent` | `#046A38` | Selezione, focus, pulsante (verde scuro Deloitte) | 6,7:1 |
+| `--st-brand` | `#86BC25` | Solo decorativo: barretta sotto la cella scelta della scala e a sinistra dell'opzione scelta | 2,3:1 (insufficiente per testo e bordi, quindi non usato per questi) |
+| `--st-accent-tint` | `#EAF3E0` | Sfondo dell'opzione selezionata | testo 14,2:1 |
 | `--st-page` / `--st-paper` | `#F3F4F6` / `#FFFFFF` | Sfondo pagina / colonna | — |
 | `--st-error` | `#B42318` | Errori | 6,6:1 |
 

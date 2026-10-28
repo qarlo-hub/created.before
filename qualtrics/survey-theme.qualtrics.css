@@ -15,20 +15,20 @@ html:root {
   --mixes-input-neutral-border-2: #858D98;
   --palettes-error-1: #B42318;
   --palettes-error-1-on-bg: #B42318;
-  --mixes-primary-1: #14596E;
+  --mixes-primary-1: #046A38;
   --mixes-primary-2: #FFFFFF;
-  --colors-primary-as-control: #14596E;
-  --colors-primary-as-control-on-bg: #14596E;
-  --colors-primary-as-text: #14596E;
-  --colors-primary-as-text-on-bg: #14596E;
-  --colors-primary-for-focus: #14596E;
-  --colors-primary-for-focus-on-bg: #14596E;
-  --colors-primary-for-hover: #F1F6F8;
-  --colors-primary-for-active: #E5EFF2;
-  --colors-primary-for-selected: #E5EFF2;
-  --colors-primary-for-selected-hover: #E5EFF2;
-  --colors-primary-for-matrix-hover: #F1F6F8;
-  --colors-primary-for-sbs-column-hover: #F1F6F8;
+  --colors-primary-as-control: #046A38;
+  --colors-primary-as-control-on-bg: #046A38;
+  --colors-primary-as-text: #046A38;
+  --colors-primary-as-text-on-bg: #046A38;
+  --colors-primary-for-focus: #046A38;
+  --colors-primary-for-focus-on-bg: #046A38;
+  --colors-primary-for-hover: #F4F9EE;
+  --colors-primary-for-active: #EAF3E0;
+  --colors-primary-for-selected: #EAF3E0;
+  --colors-primary-for-selected-hover: #EAF3E0;
+  --colors-primary-for-matrix-hover: #F4F9EE;
+  --colors-primary-for-sbs-column-hover: #F4F9EE;
 }
 body {
   background: #F3F4F6;
@@ -90,16 +90,21 @@ body {
 #page .number-scale .buttons .choice.selected .choice-label,
 #page .nps .choices .choice.selected:hover .choice-label,
 #page .number-scale .buttons .choice.selected:hover .choice-label {
-  background: #14596E;
-  border-color: #14596E;
+  background: #046A38;
+  border-color: #046A38;
   color: #FFFFFF;
   font-weight: 700;
+  box-shadow: inset 0 -4px 0 #86BC25;
 }
 #page .nps .choices .choice.focused .choice-label,
 #page .number-scale .buttons .choice.focused .choice-label {
   position: relative;
   z-index: 1;
-  box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 5px #14596E;
+  box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 5px #046A38;
+}
+#page .nps .choices .choice.selected.focused .choice-label,
+#page .number-scale .buttons .choice.selected.focused .choice-label {
+  box-shadow: inset 0 -4px 0 #86BC25, 0 0 0 3px #FFFFFF, 0 0 0 5px #046A38;
 }
 #page .nps .column-label-container {
   padding: 0 0 .5rem;
@@ -125,12 +130,12 @@ body {
 }
 #page .mc .choice.selected .choice-label,
 #page .mc .choice.selected:hover .choice-label {
-  background: #E5EFF2;
-  border-color: #14596E;
-  box-shadow: inset 0 0 0 1px #14596E;
+  background: #EAF3E0;
+  border-color: #046A38;
+  box-shadow: inset 0 0 0 1px #046A38, inset 6px 0 0 #86BC25;
 }
 #page .mc .choice.focused .choice-label {
-  box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 5px #14596E;
+  box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 5px #046A38;
 }
 #page .matrix .matrix-scale-points-item,
 #page .sbs .sbs-scale-point,
@@ -198,9 +203,9 @@ body {
   line-height: 1.5;
 }
 #page .question .text-input:focus {
-  outline: 2px solid #14596E;
+  outline: 2px solid #046A38;
   outline-offset: 2px;
-  border-color: #14596E;
+  border-color: #046A38;
 }
 #page .cs .text-input {
   width: 6rem;
@@ -231,13 +236,13 @@ body {
   min-height: 3rem;
   padding: 0 1.5rem;
   border-radius: 10px;
-  background: #14596E;
+  background: #046A38;
   color: #FFFFFF;
   font-size: 1rem;
   font-weight: 600;
 }
 #page #navigation .navigation-button:focus-visible {
-  outline: 2px solid #14596E;
+  outline: 2px solid #046A38;
   outline-offset: 3px;
 }
 @media (min-width: 30rem) {

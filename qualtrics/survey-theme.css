@@ -15,16 +15,17 @@
    html:root outranks the :root block Qualtrics injects, whatever the order.
    -------------------------------------------------------------------------- */
 html:root {
-  /* palette — contrast on white: ink 16.2, graphite 6.6, line 3.4, accent 7.8 */
+  /* palette — contrast on white: ink 16.2, graphite 6.6, line 3.4, accent 6.7 */
   --st-ink: #1C2128;
   --st-graphite: #555E6B;
   --st-line: #858D98;          /* control borders, >= 3:1 (WCAG 1.4.11) */
   --st-divider: #DADDE2;       /* decorative separators only */
   --st-page: #F3F4F6;
   --st-paper: #FFFFFF;
-  --st-accent: #14596E;
-  --st-accent-tint: #E5EFF2;   /* selected background */
-  --st-accent-hover: #F1F6F8;  /* hover background */
+  --st-accent: #046A38;        /* Deloitte dark green: text, fills, focus */
+  --st-brand: #86BC25;         /* Deloitte green: decorative only (2.3:1, never text or boundary) */
+  --st-accent-tint: #EAF3E0;   /* selected background */
+  --st-accent-hover: #F4F9EE;  /* hover background */
   --st-error: #B42318;
 
   /* type */
@@ -153,6 +154,7 @@ body {
   border-color: var(--st-accent);
   color: var(--st-paper);
   font-weight: 700;
+  box-shadow: inset 0 -4px 0 var(--st-brand);
 }
 
 #page .nps .choices .choice.focused .choice-label,
@@ -160,6 +162,11 @@ body {
   position: relative;
   z-index: 1;
   box-shadow: 0 0 0 3px var(--st-paper), 0 0 0 5px var(--st-accent);
+}
+
+#page .nps .choices .choice.selected.focused .choice-label,
+#page .number-scale .buttons .choice.selected.focused .choice-label {
+  box-shadow: inset 0 -4px 0 var(--st-brand), 0 0 0 3px var(--st-paper), 0 0 0 5px var(--st-accent);
 }
 
 #page .nps .column-label-container {
@@ -197,7 +204,7 @@ body {
 #page .mc .choice.selected:hover .choice-label {
   background: var(--st-accent-tint);
   border-color: var(--st-accent);
-  box-shadow: inset 0 0 0 1px var(--st-accent);
+  box-shadow: inset 0 0 0 1px var(--st-accent), inset 6px 0 0 var(--st-brand);
 }
 
 #page .mc .choice.focused .choice-label {
