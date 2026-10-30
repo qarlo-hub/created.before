@@ -1,0 +1,151 @@
+Progressione: [2.0, 3.0, 5.0, 10.0, 20.0, 40.0, 80.0, 160.0, 320.0, 640.0, 1280.0, 2560.0]
+                                              scenario  cicli  persi  passi_max  puntata_max_€  capitale_impegnato_max_€  puntato_tot_€  profitto_€  ROI_% stagioni_in_perdita
+              1 squadra per campionato, limite=nessuno    440      5         27     83886080.0                  83886080      168582467   134781761   80.0                2/98
+                   1 squadra per campionato, limite=12    459     23         12         2560.0                      5120         144348      -49380  -34.2               16/98
+                   1 squadra per campionato, limite=10    468     32         10          640.0                      1310          55718      -14593  -26.2               25/98
+                    1 squadra per campionato, limite=8    487     47          8          160.0                       412          25516       -4242  -16.6               34/98
+1 squadra per campionato, limite=10, quota MAX mercato    468     32         10          640.0                      1310          55718      -12168  -21.8               25/98
+               tutte le squadre idonee, limite=nessuno    718      5         27     83886080.0                  83886080      172429865   132147121   76.6                2/98
+                    tutte le squadre idonee, limite=12    745     32         12         2560.0                      5611         219790      -63696  -29.0               23/98
+                    tutte le squadre idonee, limite=10    755     42         10          640.0                      1700          88936      -12126  -13.6               27/98
+                     tutte le squadre idonee, limite=8    780     67          8          160.0                       577          43561        -656   -1.5               31/98
+ tutte le squadre idonee, limite=10, quota MAX mercato    755     42         10          640.0                      1700          88936       -7273   -8.2               26/98
+
+===== Dettaglio senza limite: 1 squadra per campionato =====
+
+Partite necessarie per arrivare al pareggio (cicli):
+steps
+1     126
+2      79
+3      72
+4      45
+5      27
+6      27
+7      18
+8       8
+9       9
+10      4
+11      4
+12      4
+13      6
+14      4
+15      1
+16      3
+17      2
+27      1
+
+Cicli più costosi:
+div  season      team      start        end  steps      staked  max_stake      profit       outcome
+SP1    2014 Vallecano 2014-10-04 2015-04-30     27 167772160.0 83886080.0 134217728.0         vinto
+ D1    2019     Mainz 2019-09-20 2020-02-16     17    163840.0    81920.0    115507.2         vinto
+SP1    2012 Vallecano 2012-10-29 2013-03-02     17    163840.0    81920.0    106496.0         vinto
+ F1    2024    Rennes 2025-01-19 2025-05-17     16     81920.0    40960.0    -81920.0 fine stagione
+ D1    2010     Mainz 2010-09-21 2011-02-05     16     81920.0    40960.0     57344.0         vinto
+ E0    2013    Fulham 2013-10-26 2014-02-09     16     81920.0    40960.0    204800.0         vinto
+SP1    2019   Levante 2019-11-08 2020-03-08     15     40960.0    20480.0     29491.2         vinto
+ I1    2024    Verona 2024-09-20 2025-01-04     14     20480.0    10240.0     10444.8         vinto
+SP1    2010   Espanol 2011-01-03 2011-04-10     14     20480.0    10240.0     12800.0         vinto
+ E0    2016   Chelsea 2016-10-23 2017-01-31     14     20480.0    10240.0     12800.0         vinto
+
+Per campionato:
+                cicli  passi_max     profitto
+div                                          
+Bundesliga         98         17     203189.0
+Premier League     94         16     237710.0
+Ligue 1            84         16     -63752.0
+Serie A            82         14      32826.0
+Liga               82         27  134371787.0
+
+Profitto per stagione:
+season
+2006         1043.0
+2007          250.0
+2008          628.0
+2009          888.0
+2010        77095.0
+2011        13426.0
+2012       106777.0
+2013       205719.0
+2014    134219088.0
+2015        23242.0
+2016        15585.0
+2017         5138.0
+2018         1000.0
+2019       153110.0
+2020        -9532.0
+2021        12074.0
+2022         4109.0
+2023         9949.0
+2024       -61395.0
+2025         3565.0
+
+===== Dettaglio senza limite: tutte le squadre idonee =====
+
+Partite necessarie per arrivare al pareggio (cicli):
+steps
+1     190
+2     141
+3     110
+4      70
+5      53
+6      44
+7      37
+8      18
+9      11
+10      9
+11      2
+12      7
+13      5
+14      7
+15      5
+16      3
+17      2
+18      1
+19      1
+21      1
+27      1
+
+Cicli più costosi:
+div  season             team      start        end  steps      staked  max_stake      profit       outcome
+SP1    2014        Vallecano 2014-10-04 2015-04-30     27 167772160.0 83886080.0 134217728.0         vinto
+ F1    2024           Rennes 2024-11-30 2025-05-17     21   2621440.0  1310720.0  -2621440.0 fine stagione
+ E0    2020 Sheffield United 2021-01-17 2021-05-23     19    655360.0   327680.0   -655360.0 fine stagione
+SP1    2012        Vallecano 2012-10-21 2013-03-02     18    327680.0   163840.0    212992.0         vinto
+ D1    2019            Mainz 2019-09-20 2020-02-16     17    163840.0    81920.0    115507.2         vinto
+ D1    2015         Hannover 2015-11-06 2016-04-08     17    163840.0    81920.0    180224.0         vinto
+ E0    2013           Fulham 2013-10-26 2014-02-09     16     81920.0    40960.0    204800.0         vinto
+ F1    2019       Strasbourg 2019-10-05 2020-02-16     16     81920.0    40960.0     65945.6         vinto
+ D1    2010            Mainz 2010-09-21 2011-02-05     16     81920.0    40960.0     57344.0         vinto
+ E0    2023        Brentford 2023-11-12 2024-03-02     15     40960.0    20480.0     38092.8         vinto
+
+Per campionato:
+                cicli  passi_max     profitto
+div                                          
+Bundesliga        161         17     416813.0
+Premier League    148         19    -334243.0
+Ligue 1           141         21   -2497005.0
+Serie A           134         14      47589.0
+Liga              134         27  134513967.0
+
+Profitto per stagione:
+season
+2006         1070.0
+2007          362.0
+2008          949.0
+2009         2038.0
+2010       125890.0
+2011        20777.0
+2012       213608.0
+2013       206707.0
+2014    134222763.0
+2015       181704.0
+2016        29874.0
+2017        38331.0
+2018         1135.0
+2019       225243.0
+2020      -652168.0
+2021        22765.0
+2022        60417.0
+2023        39315.0
+2024     -2597999.0
+2025         4340.0

@@ -19,3 +19,9 @@ python backtest.py Club-Football-Match-Data-2000-2025/data/Matches.csv
 - Si inizia un ciclo solo dalla 4ª giornata giocata e fino al 75% della stagione.
 - Si sceglie la squadra di metà classifica con la serie senza pareggi più lunga (soglia minima 0/3/5/7).
 - Un ciclo alla volta per campionato. Ciclo perso se: si raggiunge il limite di puntate oppure finisce la stagione.
+
+## Regole dell'utente (`strategia_utente.py`, output in `risultati_strategia_utente.txt`)
+- Solo squadre arrivate 9ª–15ª nella stagione precedente (neopromosse escluse).
+- Ciclo avviato dopo almeno 5 partite di fila senza pareggio, solo se la squadra ha meno di 5 pareggi stagionali.
+- Puntate 2, 3, 5, 10, 20, 40, 80, 160, … fino al pareggio; se la stagione finisce prima, il ciclo è perso.
+- Due modalità: una squadra alla volta per campionato (serie più lunga) oppure tutte le squadre idonee in parallelo.

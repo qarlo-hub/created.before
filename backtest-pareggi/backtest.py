@@ -23,7 +23,7 @@ FIRST_SEASON, LAST_SEASON = 2006, 2025  # 2006/07 ... 2025/26 = 20 stagioni
 BASE_STAKE = 2.0
 
 
-def load(path):
+def load(path, first=FIRST_SEASON, last=LAST_SEASON):
     d = pd.read_csv(path, low_memory=False,
                     usecols=["Division", "MatchDate", "HomeTeam", "AwayTeam",
                              "FTResult", "FTHome", "FTAway", "OddDraw", "MaxDraw"])
@@ -33,7 +33,7 @@ def load(path):
     # 2019/20 si è chiuso tra luglio e inizio agosto 2020 per il Covid
     covid = (d.MatchDate >= "2020-07-01") & (d.MatchDate < "2020-08-20")
     d.loc[covid, "Season"] = 2019
-    d = d[(d.Season >= FIRST_SEASON) & (d.Season <= LAST_SEASON)].dropna(subset=["FTResult"])
+    d = d[(d.Season >= first) & (d.Season <= last)].dropna(subset=["FTResult"])
     # quota mancante (~1%): uso la quota massima di mercato, altrimenti la mediana della stagione
     d["Odd"] = d.OddDraw.fillna(d.MaxDraw)
     d["Odd"] = d.Odd.fillna(d.groupby(["Division", "Season"]).Odd.transform("median"))
