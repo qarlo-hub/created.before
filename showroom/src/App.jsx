@@ -100,7 +100,7 @@ export default function App() {
       <div className={`app${selected && !closing ? ' has-detail' : ''}${editor ? ' has-editor' : ''}`}>
         <header className="topbar">
           <div className="brand">
-            <span className="brand-mark">created.before</span>
+            <span className="brand-mark">Deloitte’s Gems</span>
             <span className="brand-sep" />
             <span className="brand-sub">Showroom · Rack 01</span>
           </div>
