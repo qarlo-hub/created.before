@@ -1,6 +1,7 @@
 // Collection model + localStorage persistence.
 
-export const STORAGE_KEY = 'rack-showroom.collection.v1';
+// v2: new starting collection (bumping the key shows it to browsers that saved the old one)
+export const STORAGE_KEY = 'rack-showroom.collection.v2';
 
 export const SIZES = [
   { id: 'S', label: 'S', fs: 15 },
@@ -22,20 +23,13 @@ export const uid = () =>
   (globalThis.crypto?.randomUUID?.() ??
     `t-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 9)}`);
 
-const SEED_TEXTS = [
-  'LESS IS MORE',
-  'NO SIGNAL',
-  'OUT OF\nOFFICE',
-  'NOT FOR\nEVERYONE',
-  'THINK\nDIFFERENT',
-  'NOTHING\nTO PROVE',
-];
+const SEED_TEXTS = ['GOVERNANCE\nDI CONTENUTO', 'DOBBIAMO\nTOGLIERCI\nIL VIZIO'];
 
 export function initialCollection() {
   return SEED_TEXTS.map((text, i) => ({
     id: `seed-${i + 1}`,
     text,
-    size: i === 1 ? 'L' : 'M',
+    size: 'M',
     align: 'center',
     weight: 700,
     createdAt: 0,
