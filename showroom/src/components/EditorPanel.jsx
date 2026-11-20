@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Shirt from './Shirt.jsx';
+import RoomBackdrop from './RoomBackdrop.jsx';
 import { ALIGNS, MAX_CHARS, MAX_LINES, SIZES, WEIGHTS } from '../lib/store.js';
 import { layoutPrint } from '../lib/textFit.js';
 import { usePendulum } from '../lib/usePendulum.js';
@@ -83,6 +84,7 @@ export default function EditorPanel({ mode, initial, onCancel, onSave }) {
         </header>
 
         <div className="editor-preview" aria-hidden="true">
+          <RoomBackdrop className="editor-room" getLights={(w, h) => [{ x: w / 2, y: -0.15 * h }]} seed={41} />
           <div className="editor-rail" />
           <div ref={swingRef} className="editor-swing">
             <Shirt shirt={draft} className="editor-svg" />

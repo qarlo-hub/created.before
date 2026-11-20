@@ -13,12 +13,14 @@ import { SILHOUETTE } from './geometry.js';
 function Source({ kind, seed }) {
   const vb = `${RASTER.x} ${RASTER.y} ${RASTER.w} ${RASTER.h}`;
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox={vb} width={RASTER.px} height={RASTER.px} data-kind={kind}>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox={vb} width={RASTER.pxW} height={RASTER.pxH} data-kind={kind}>
       <DefsContent />
       {kind === 'fabric' ? (
         <>
           {/* baked shadow on the wall */}
-          <path d={SILHOUETTE} transform="translate(0 17)" fill="#1e1a14" opacity="0.2" filter="url(#blur-lg)" />
+          {/* the rack stands in front of the wall, lit from the ceiling: a soft shadow falls lower */}
+          <path d={SILHOUETTE} transform="translate(0 40) scale(1 1.02)" fill="#2a2016" opacity="0.2" filter="url(#blur-xl)" />
+          <path d={SILHOUETTE} transform="translate(0 14)" fill="#1e1a14" opacity="0.14" filter="url(#blur-lg)" />
           <path d={SILHOUETTE} transform="translate(0 3)" fill="#000" opacity="0.28" filter="url(#blur-xs)" />
           <GarmentBase />
           <GarmentSurface seed={seed} />
@@ -38,8 +40,9 @@ async function rasterize(svgEl) {
     img.src = url;
     await img.decode();
     const c = document.createElement('canvas');
-    c.width = c.height = RASTER.px;
-    c.getContext('2d').drawImage(img, 0, 0, RASTER.px, RASTER.px);
+    c.width = RASTER.pxW;
+    c.height = RASTER.pxH;
+    c.getContext('2d').drawImage(img, 0, 0, RASTER.pxW, RASTER.pxH);
     const blob = await new Promise((res, rej) => c.toBlob((b) => (b ? res(b) : rej(new Error('toBlob'))), 'image/png'));
     return URL.createObjectURL(blob);
   } finally {

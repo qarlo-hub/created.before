@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Shirt from './Shirt.jsx';
+import RoomBackdrop from './RoomBackdrop.jsx';
 import { SIZES, WEIGHTS } from '../lib/store.js';
 import { layoutPrint } from '../lib/textFit.js';
 import { usePendulum, useBrush } from '../lib/usePendulum.js';
@@ -34,6 +35,7 @@ export default function DetailView({
   const infoRef = useRef(null);
   const railRef = useRef(null);
   const backdropRef = useRef(null);
+  const hangRef = useRef(null);
   const [phase, setPhase] = useState('in'); // in | idle | out
   const [confirmDelete, setConfirmDelete] = useState(false);
   const pend = usePendulum(swingRef);
@@ -143,13 +145,22 @@ export default function DetailView({
 
   return (
     <div className={`detail phase-${phase}`} role="dialog" aria-modal="true" aria-label="T-shirt detail">
-      <div ref={backdropRef} className="detail-backdrop" aria-hidden="true" />
+      <RoomBackdrop
+        ref={backdropRef}
+        className="detail-backdrop"
+        getLights={(w, h) => {
+          // one downlight above the garment, a dimmer one further along the wall
+          const r = hangRef.current?.getBoundingClientRect();
+          const x = r ? r.left + r.width / 2 : w * 0.35;
+          return [{ x, y: -0.06 * h }, { x: x + Math.max(w * 0.45, 420), y: -0.06 * h, power: 0.45 }];
+        }}
+      />
       <button className="detail-back link" onClick={close}>
         <span aria-hidden="true">←</span> Back to rack
       </button>
 
       <div className="detail-stage">
-        <div className="detail-hang">
+        <div ref={hangRef} className="detail-hang">
           <div ref={railRef} className="detail-rail" aria-hidden="true" />
           <div ref={flyRef} className="detail-fly">
             <div

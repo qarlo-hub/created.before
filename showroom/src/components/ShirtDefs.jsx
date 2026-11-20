@@ -76,6 +76,10 @@ export function DefsContent() {
           <feGaussianBlur stdDeviation="11" />
         </filter>
 
+        <filter id="blur-xl" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="20" />
+        </filter>
+
         {/* jersey knit grain */}
         <filter id="knit" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse">
           <feTurbulence type="fractalNoise" baseFrequency="1.1 0.55" numOctaves="2" seed="7" result="n" />

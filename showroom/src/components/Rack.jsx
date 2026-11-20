@@ -2,6 +2,7 @@ import { forwardRef, useCallback, useEffect, useImperativeHandle, useLayoutEffec
 import Shirt from './Shirt.jsx';
 import RackStructure from './RackStructure.jsx';
 import { PIVOT, RAIL, VB } from './geometry.js';
+import { paintRoomSoon } from '../lib/room.js';
 
 /* ------------------------------------------------------------------ *
  *  Tuning                                                             *
@@ -22,15 +23,22 @@ const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 /* ------------------------------------------------------------------ *
  *  Layout                                                             *
  * ------------------------------------------------------------------ */
+// The stage fills the screen (the room runs behind the header and footer);
+// the rack itself is laid out between these bands.
+const BANDS = { top: 84, bottom: 64 };
+
 function computeLayout(stageW, stageH, n) {
   const narrow = stageW < 720;
+  const padTop = narrow ? 76 : BANDS.top;
+  const padBottom = narrow ? 58 : BANDS.bottom;
+  const availH = Math.max(200, stageH - padTop - padBottom);
   const sidePad = Math.max(18, stageW * 0.035);
   const usable = stageW - 2 * sidePad;
   const count = Math.max(1, n);
   // Preferred: light overlap (~0.64 W between hooks). Shirt size limited by height and a max.
   const wFit = usable / (1.04 + (count - 1) * 0.56);
   const minW = narrow ? clamp(stageW * 0.62, 160, 260) : 200;
-  let W = Math.min(Math.max(Math.min(wFit, 430), minW), stageH * 0.6);
+  let W = Math.min(Math.max(Math.min(wFit, 430), minW), availH * 0.62);
   W = Math.max(110, W);
   const end = W * 0.52; // hook → upright distance at the ends
   let spacing = count > 1 ? (usable - 2 * end) / (count - 1) : 0;
@@ -43,9 +51,14 @@ function computeLayout(stageW, stageH, n) {
   const t = (2 * RAIL.r * W) / VB; // tube thickness = rail diameter on the shirt drawing
   const rackH = W * 1.3;
   const block = W * 0.1 + rackH;
-  const top = Math.max(8, (stageH - block) * 0.45);
+  const top = padTop + Math.max(0, (availH - block) * 0.45);
   const railY = top + W * 0.1;
-  const floorY = Math.min(stageH - 4, railY + rackH);
+  const floorY = Math.min(stageH - 8, railY + rackH);
+  // the rack stands a little in front of the wall: the joint sits above its feet
+  const junction = floorY - W * 0.15;
+  // one ceiling downlight roughly every shirt-and-a-half along the rack
+  const nLights = Math.max(2, Math.round(rackLen / (W * 1.25)));
+  const lights = Array.from({ length: nLights }, (_, i) => ({ x: x0 + ((i + 0.5) * rackLen) / nLights }));
   return {
     stageW,
     stageH,
@@ -58,6 +71,8 @@ function computeLayout(stageW, stageH, n) {
     firstX: x0 + end,
     railY,
     floorY,
+    junction,
+    lights,
     t,
     scale: W / VB,
   };
@@ -110,6 +125,22 @@ const Rack = forwardRef(function Rack({ shirts, hiddenId, dimmed, dropInId, onSe
   }, [shirts.length]);
 
   const slotX = (i, lay) => lay.firstX + i * lay.spacing;
+
+  /* --- paint the room whenever its geometry changes --- */
+  const roomRef = useRef(null);
+  const roomKey = layout
+    ? [layout.contentW, layout.stageH, layout.junction, ...layout.lights.map((l) => l.x)].map(Math.round).join('|')
+    : '';
+  useEffect(() => {
+    const lay = L.current;
+    if (!lay || !roomRef.current) return;
+    return paintRoomSoon(roomRef.current, {
+      width: lay.contentW,
+      height: lay.stageH,
+      junction: lay.junction,
+      lights: lay.lights,
+    });
+  }, [roomKey]);
 
   /* --- physics loop --- */
   useEffect(() => {
@@ -482,8 +513,9 @@ const Rack = forwardRef(function Rack({ shirts, hiddenId, dimmed, dropInId, onSe
     >
       {layout && (
         <>
-          <div className="floor" style={{ top: layout.floorY - layout.t * 0.6 }} />
           <div ref={trackRef} className="track" style={{ width: layout.contentW }}>
+            <canvas ref={roomRef} className="room" aria-hidden="true" />
+            <div className="rack-layer">
             <RackStructure
               width={layout.contentW}
               height={layout.stageH}
@@ -514,6 +546,7 @@ const Rack = forwardRef(function Rack({ shirts, hiddenId, dimmed, dropInId, onSe
                 <Shirt shirt={s} className="tee-svg" mode="raster" />
               </div>
             ))}
+            </div>
           </div>
         </>
       )}

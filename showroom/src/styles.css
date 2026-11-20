@@ -46,6 +46,7 @@ body.is-grabbing * {
 
 /* ---------- shell ---------- */
 .app {
+  position: relative;
   height: 100vh;
   height: 100dvh;
   display: grid;
@@ -56,6 +57,12 @@ body.is-grabbing * {
     linear-gradient(180deg, var(--wall) 0%, var(--wall-lo) 100%);
 }
 
+.topbar {
+  grid-row: 1;
+}
+.bottombar {
+  grid-row: 3;
+}
 .topbar,
 .bottombar {
   display: flex;
@@ -111,7 +118,13 @@ body.is-grabbing * {
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: #4a4741;
+}
+.bottombar .muted {
+  color: #4a4741;
+}
+.bottombar .count {
+  color: var(--ink);
 }
 .hint span + span::before {
   content: '';
@@ -216,8 +229,10 @@ textarea:focus-visible {
 
 /* ---------- rack scene ---------- */
 .scene {
-  position: relative;
-  min-height: 0;
+  /* the room fills the whole screen; header and footer float over it */
+  position: absolute;
+  inset: 0;
+  z-index: 0;
 }
 .stage {
   position: absolute;
@@ -226,22 +241,28 @@ textarea:focus-visible {
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
+}
+.stage.is-dimmed {
+  pointer-events: none;
+}
+.room {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  pointer-events: none;
+}
+.rack-layer {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 45%;
   transition:
     opacity 0.55s var(--ease),
     transform 0.7s var(--ease);
 }
-.stage.is-dimmed {
-  opacity: 0.16;
+.stage.is-dimmed .rack-layer {
+  opacity: 0.12;
   transform: scale(0.965);
-  pointer-events: none;
-}
-.floor {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -100vh;
-  background: linear-gradient(180deg, #d6d3cd 0%, var(--floor) 6%, #dfdcd7 40%, #e2e0db 100%);
-  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
 }
 .track {
   position: absolute;
@@ -316,9 +337,18 @@ textarea:focus-visible {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background:
-    radial-gradient(70% 80% at 36% 30%, rgba(247, 246, 243, 0.97), rgba(236, 234, 230, 0.93) 70%),
-    rgba(234, 232, 228, 0.92);
+  background: var(--wall);
+}
+.room-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+}
+.editor-room {
+  position: absolute;
+  inset: 0;
+  background: var(--wall);
 }
 .detail.phase-out {
   pointer-events: none;
@@ -347,13 +377,39 @@ textarea:focus-visible {
 }
 .detail-rail {
   position: absolute;
-  left: -32%;
-  right: -32%;
+  left: -24%;
+  right: -24%;
   top: 7.25%;
   height: 4%;
+  border-radius: 999px;
   background: linear-gradient(180deg, #4f5255 0%, #b9bdc1 12%, #fff 26%, #c9ccd0 40%, #6c7074 62%, #a3a7ab 84%, #35383a 100%);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 30%, #000 70%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 30%, #000 70%, transparent);
+  box-shadow:
+    0 2.2vh 2.4vh -0.6vh rgba(40, 30, 20, 0.22),
+    0 0.4vh 0.6vh rgba(0, 0, 0, 0.18);
+}
+/* wall flanges at both ends of the rail */
+.detail-rail::before,
+.detail-rail::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  height: 175%;
+  aspect-ratio: 1;
+  width: auto;
+  translate: 0 -50%;
+  border-radius: 50%;
+  /* flat wall flange seen face-on: brushed disc with a darker rim */
+  background:
+    radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.35) 72%, rgba(255, 255, 255, 0.5) 78%, rgba(0, 0, 0, 0.25) 100%),
+    linear-gradient(160deg, #f2f3f4 0%, #b6babe 45%, #7e8286 100%);
+  box-shadow: 0 0.8vh 1.2vh rgba(40, 30, 20, 0.22);
+  z-index: -1;
+}
+.detail-rail::before {
+  left: -0.4%;
+}
+.detail-rail::after {
+  right: -0.4%;
 }
 .detail-fly {
   position: absolute;
@@ -519,9 +575,7 @@ textarea:focus-visible {
   position: relative;
   flex: 0 0 auto;
   height: clamp(220px, 40vh, 360px);
-  background:
-    radial-gradient(80% 90% at 50% 0%, var(--wall-hi), rgba(245, 244, 241, 0) 70%),
-    var(--wall);
+  background: var(--wall);
   overflow: hidden;
   border-top: 1px solid var(--hair);
   border-bottom: 1px solid var(--hair);
@@ -530,6 +584,7 @@ textarea:focus-visible {
   position: absolute;
   left: 0;
   right: 0;
+  box-shadow: 0 10px 12px -4px rgba(40, 30, 20, 0.2);
   /* the shirt box is `height` tall and starts 4% from the top; rail aligns with its hook */
   top: calc(4% + 0.0725 * (100% - 8%));
   height: calc(0.04 * (100% - 8%));

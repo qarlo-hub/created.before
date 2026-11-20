@@ -64,6 +64,20 @@ const RackStructure = memo(function RackStructure({ width, height, x0, x1, railY
         </linearGradient>
       </defs>
 
+      {/* soft shadow of the rail on the wall behind (light from the ceiling, in front) */}
+      <rect x={x0 + R} y={railY + t * 3.2} width={x1 - x0 - 2 * R} height={t * 0.9} fill="#2a2016" opacity="0.07" filter={`url(#${id('shadow')})`} />
+      {/* reflections of the uprights in the polished floor */}
+      <linearGradient id={id('refl')} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor="#6d7074" stopOpacity="0.32" />
+        <stop offset="1" stopColor="#6d7074" stopOpacity="0" />
+      </linearGradient>
+      {[x0, x1].map((x) => (
+        <g key={'r' + x}>
+          <rect x={x - (t * 7) / 2} y={floorY} width={t * 7} height={t * 0.7} fill="#111" opacity="0.25" />
+          <rect x={x - h} y={floorY + t * 0.7} width={t} height={t * 9} fill={`url(#${id('refl')})`} />
+        </g>
+      ))}
+
       {/* contact shadows on the floor */}
       <ellipse cx={(x0 + x1) / 2} cy={floorY + footH * 0.4} rx={(x1 - x0) / 2 + footW * 0.4} ry={t * 0.9} fill="#000" opacity="0.16" filter={`url(#${id('shadow')})`} />
       <ellipse cx={x0} cy={floorY + footH * 0.3} rx={footW * 0.6} ry={t * 0.5} fill="#000" opacity="0.35" filter={`url(#${id('shadow')})`} />
