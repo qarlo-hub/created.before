@@ -1,7 +1,7 @@
 import { memo, useContext, useMemo } from 'react';
 import { FontContext } from '../lib/fontContext.js';
 import { FabricContext, RASTER, variantFor } from '../lib/fabric.js';
-import { SILHOUETTE, NECK_OPENING, COLLAR_BAND, COLLAR_MID, VB } from './geometry.js';
+import { BODY, SLEEVE, MIRROR, PIECES, NECK_OPENING, COLLAR_BAND, COLLAR_MID, VB } from './geometry.js';
 import { layoutPrint, FONT, LETTER_SPACING } from '../lib/textFit.js';
 
 // Small deterministic PRNG so each shirt drapes a little differently but consistently.
@@ -82,9 +82,6 @@ function useFolds(seed) {
         // drag lines neck → armpit
         `M172 106 Q144 132 112 168`,
         `M228 106 Q256 132 288 168`,
-        // sleeves
-        `M93 128 Q78 152 64 182`,
-        `M307 128 Q322 152 336 182`,
         // lower body soft swell
         `M${cx - 30} 300 C${cx - 26} 330 ${cx - 34} 350 ${cx - 28} 368`,
       ],
@@ -93,8 +90,6 @@ function useFolds(seed) {
         `M${rx - 14} 140 C${rx - 20} 214 ${rx - 10 + j(5)} 292 ${rx - 16} 368`,
         `M178 114 Q150 146 120 180`,
         `M222 114 Q250 146 280 180`,
-        `M101 150 Q97 172 90 198`,
-        `M299 150 Q303 172 310 198`,
         `M${cx + 6 + j(6)} 282 C${cx + 10} 318 ${cx + 2} 344 ${cx + 8} 370`,
         `M${cx - 48} 330 Q${cx - 44} 352 ${cx - 50} 370`,
         `M${cx + 52} 326 Q${cx + 48} 350 ${cx + 54} 370`,
@@ -109,7 +104,7 @@ const SEAM_LIGHT = '#3c3c3c';
 export const GarmentBase = memo(function GarmentBase() {
   return (
     <g pointerEvents="none">
-      <path d={SILHOUETTE} fill="url(#tee-base)" />
+      <path d={BODY} fill="url(#tee-base)" />
       <path d={NECK_OPENING} fill="url(#tee-neck-in)" />
       {/* inner back neck tape */}
       <path d="M168 90.5 Q200 85 232 90.5" fill="none" stroke="#0e0e0e" strokeWidth="5" />
@@ -122,7 +117,7 @@ export const GarmentSurface = memo(function GarmentSurface({ seed }) {
   const f = useFolds(seed);
   return (
     <g pointerEvents="none">
-      <g clipPath="url(#tee-clip)">
+      <g clipPath="url(#body-clip)">
         <rect x="0" y="0" width={VB} height={VB} fill="url(#tee-sides)" />
         <rect x="0" y="0" width={VB} height={VB} fill="url(#tee-key)" />
         {/* drape */}
@@ -137,9 +132,15 @@ export const GarmentSurface = memo(function GarmentSurface({ seed }) {
         {/* hanger tips pushing the shoulders */}
         <ellipse cx="101" cy="122" rx="9" ry="6" fill="#fff" opacity="0.07" filter="url(#blur-sm)" />
         <ellipse cx="299" cy="122" rx="9" ry="6" fill="#fff" opacity="0.045" filter="url(#blur-sm)" />
-        {/* sleeves sit slightly behind the body plane */}
-        <path d="M95 115 C82 131 64 158 49 184 Q67 197 86 207 C92 196 98 184 102 174 C104 150 100 130 95 115Z" fill="#000" opacity="0.18" />
-        <path d="M305 115 C318 131 336 158 351 184 Q333 197 314 207 C308 196 302 184 298 174 C296 150 300 130 305 115Z" fill="#000" opacity="0.3" />
+        {/* the hanging sleeves shade the body side just behind them */}
+        <g filter="url(#blur-sm)">
+          {[undefined, MIRROR].map((t, i) => (
+            <g key={i} transform={t}>
+              <path d="M100 122 C105 142 107 166 108 182 C109 196 110 206 111 215" stroke="#000" strokeWidth="8" fill="none" opacity="0.5" />
+              <path d="M90 217 Q101 222 112 219" stroke="#000" strokeWidth="6" fill="none" opacity="0.35" />
+            </g>
+          ))}
+        </g>
         {/* hem turn-up */}
         <path d="M100 362 C160 369 240 369 300 362" stroke="#000" strokeWidth="9" fill="none" opacity="0.35" filter="url(#blur-sm)" />
         <path d="M101 356.5 C160 363.5 240 363.5 299 356.5" stroke="#fff" strokeWidth="1.2" fill="none" opacity="0.06" />
@@ -155,25 +156,62 @@ export const GarmentSurface = memo(function GarmentSurface({ seed }) {
         <path d="M165 94.6 C149 99.6 121 108.6 97 119.6" stroke={SEAM_LIGHT} strokeWidth="0.7" opacity="0.6" />
         <path d="M235 93 C251 98 279 107 303 118" stroke={SEAM_DARK} strokeWidth="1.3" opacity="0.8" />
         <path d="M235 94.6 C251 99.6 279 108.6 303 119.6" stroke={SEAM_LIGHT} strokeWidth="0.7" opacity="0.5" />
-        {/* armholes */}
-        <path d="M96 117 C104 134 106 154 102.5 174" stroke={SEAM_DARK} strokeWidth="1.4" opacity="0.85" />
-        <path d="M97.8 118 C105.8 135 107.8 155 104.3 174" stroke={SEAM_LIGHT} strokeWidth="0.7" opacity="0.55" />
-        <path d="M304 117 C296 134 294 154 297.5 174" stroke={SEAM_DARK} strokeWidth="1.4" opacity="0.85" />
-        <path d="M302.2 118 C294.2 135 292.2 155 295.7 174" stroke={SEAM_LIGHT} strokeWidth="0.7" opacity="0.4" />
-        {/* sleeve hems: crease + twin-needle stitch */}
-        <path d="M55 176.5 Q71 188 89 198" stroke="#000" strokeWidth="1.2" opacity="0.7" />
-        <path d="M55.6 178.5 Q71.6 190 89.4 200" stroke={SEAM_LIGHT} strokeWidth="0.55" strokeDasharray="1.6 1.3" opacity="0.9" />
-        <path d="M52.6 181.5 Q68.6 193 87.4 203" stroke={SEAM_LIGHT} strokeWidth="0.55" strokeDasharray="1.6 1.3" opacity="0.7" />
-        <path d="M345 176.5 Q329 188 311 198" stroke="#000" strokeWidth="1.2" opacity="0.7" />
-        <path d="M344.4 178.5 Q328.4 190 310.6 200" stroke={SEAM_LIGHT} strokeWidth="0.55" strokeDasharray="1.6 1.3" opacity="0.7" />
-        <path d="M347.4 181.5 Q331.4 193 312.6 203" stroke={SEAM_LIGHT} strokeWidth="0.55" strokeDasharray="1.6 1.3" opacity="0.5" />
         {/* bottom hem stitch */}
         <path d="M102.5 359 C160 366 240 366 297.5 359" stroke={SEAM_LIGHT} strokeWidth="0.55" strokeDasharray="1.7 1.3" opacity="0.85" />
         <path d="M102.5 362.6 C160 369.6 240 369.6 297.5 362.6" stroke={SEAM_LIGHT} strokeWidth="0.55" strokeDasharray="1.7 1.3" opacity="0.6" />
       </g>
 
       {/* outline: soft edge so the black reads against the wall */}
-      <path d={SILHOUETTE} fill="none" stroke="#000" strokeWidth="1" opacity="0.55" />
+      <path d={BODY} fill="none" stroke="#000" strokeWidth="1" opacity="0.55" />
+
+      <Sleeve seed={seed} />
+      <Sleeve seed={seed} right />
+    </g>
+  );
+});
+
+/* ---------- Sleeve: drawn as the left one; the right one is mirrored and sits in more shadow ---------- */
+const Sleeve = memo(function Sleeve({ seed, right = false }) {
+  const v = useMemo(() => {
+    const r = rng(seed + (right ? ':r' : ':l'));
+    return () => (r() - 0.5) * 2;
+  }, [seed, right]);
+  const a = v() * 2.5;
+  const b = v() * 2;
+  return (
+    <g transform={right ? MIRROR : undefined} pointerEvents="none">
+      <path d={SLEEVE} fill="url(#sleeve-len)" />
+      <g clipPath="url(#sleeve-clip)">
+        <rect x="40" y="100" width="80" height="125" fill="url(#sleeve-round)" />
+        <g filter="url(#blur-sm)">
+          {/* ridge catching the light, valley toward the underarm */}
+          <path d={`M${84 + a} 124 C${74 + a} 150 ${68 + b} 176 ${68 + b} 206`} stroke="#fff" strokeWidth="6" fill="none" opacity="0.075" />
+          <path d={`M${95 + b} 132 C${91 + b} 158 ${90 + a} 184 ${94 + a} 211`} stroke="#000" strokeWidth="6" fill="none" opacity="0.42" />
+          {/* weight of the cloth pulling from the hanger tip toward the inner hem */}
+          <path d={`M78 134 C${84 + a} 162 ${93 + b} 188 104 209`} stroke="#fff" strokeWidth="3.5" fill="none" opacity="0.05" />
+          {/* bunched cloth at the underarm */}
+          <path d="M104.5 170 Q99 176 97 187" stroke="#000" strokeWidth="3" fill="none" opacity="0.45" />
+          <path d="M103.5 158 Q99.5 164 98.5 173" stroke="#000" strokeWidth="2.2" fill="none" opacity="0.3" />
+          <path d="M101 163 Q97 170 95.5 180" stroke="#fff" strokeWidth="1.8" fill="none" opacity="0.05" />
+        </g>
+        {/* hanger tip rounding the cap */}
+        <ellipse cx="90" cy="121" rx="8" ry="5" fill="#fff" opacity={right ? 0.05 : 0.09} filter="url(#blur-sm)" />
+        {/* turned-up hem band: crease, folded edge catching light, open edge in shadow */}
+        <path d="M56 193 C69 199.5 87.5 205.5 106 206.5" stroke="#000" strokeWidth="1.3" fill="none" opacity="0.75" />
+        <path d="M55.6 194.8 C68.6 201.3 87.2 207.3 106 208.3" stroke="#fff" strokeWidth="0.8" fill="none" opacity="0.07" />
+        <path d="M55 201 C69 207.5 88 213.5 106 214.5" stroke="#000" strokeWidth="2.6" fill="none" opacity="0.45" filter="url(#blur-xs)" />
+        <rect x="40" y="100" width="80" height="125" filter="url(#knit)" opacity="0.09" />
+        {right && <path d={SLEEVE} fill="#000" opacity="0.14" />}
+      </g>
+      <g fill="none" strokeLinecap="round">
+        {/* twin-needle hem stitch */}
+        <path d="M55.6 196.4 C68.8 202.8 87.6 208.6 106 209.6" stroke={SEAM_LIGHT} strokeWidth="0.55" strokeDasharray="1.6 1.3" opacity="0.9" />
+        <path d="M55 199.2 C68.4 205.6 87.4 211.4 105.8 212.4" stroke={SEAM_LIGHT} strokeWidth="0.55" strokeDasharray="1.6 1.3" opacity="0.65" />
+        {/* armhole seam where the sleeve is set into the body */}
+        <path d="M97.5 114 C102.2 136 103.6 160 104 177" stroke={SEAM_DARK} strokeWidth="1.1" opacity="0.6" />
+        <path d="M95.8 115 C100.4 137 101.8 160 102.2 177" stroke={SEAM_LIGHT} strokeWidth="0.6" opacity={right ? 0.3 : 0.45} />
+      </g>
+      <path d={SLEEVE} fill="none" stroke="#000" strokeWidth="1" opacity="0.6" />
     </g>
   );
 });
@@ -240,7 +278,9 @@ const Shirt = memo(function Shirt({ shirt, className, title, mode = 'live' }) {
       <Hanger />
       <Collar />
       {/* hit area: the real silhouette + the hook, so overlapping shirts are picked precisely */}
-      <path className="hit" d={SILHOUETTE} fill="transparent" />
+      {PIECES.map((pc, i) => (
+        <path key={i} className="hit" d={pc.d} transform={pc.transform} fill="transparent" />
+      ))}
       <path className="hit" d="M200 96 L200 30" stroke="transparent" strokeWidth="14" />
     </svg>
   );

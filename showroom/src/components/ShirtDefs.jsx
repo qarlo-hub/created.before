@@ -1,4 +1,4 @@
-import { SILHOUETTE } from './geometry.js';
+import { BODY, SLEEVE, MIRROR } from './geometry.js';
 
 // Gradients, filters and clip paths shared by every shirt instance (defined once per document).
 export default function ShirtDefs() {
@@ -13,8 +13,33 @@ export function DefsContent() {
   return (
       <defs>
         <clipPath id="tee-clip" clipPathUnits="userSpaceOnUse">
-          <path d={SILHOUETTE} />
+          <path d={BODY} />
+          <path d={SLEEVE} />
+          <path d={SLEEVE} transform={MIRROR} />
         </clipPath>
+        <clipPath id="body-clip" clipPathUnits="userSpaceOnUse">
+          <path d={BODY} />
+        </clipPath>
+        {/* used inside the (possibly mirrored) sleeve group, so it follows the mirror */}
+        <clipPath id="sleeve-clip" clipPathUnits="userSpaceOnUse">
+          <path d={SLEEVE} />
+        </clipPath>
+
+        {/* sleeve tone along its length: lit cap, darker toward the hem */}
+        <linearGradient id="sleeve-len" x1="0" y1="112" x2="0" y2="215" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#2b2b2b" />
+          <stop offset="0.35" stopColor="#1c1c1c" />
+          <stop offset="1" stopColor="#121212" />
+        </linearGradient>
+        {/* across the sleeve: a tube turning away at both edges */}
+        <linearGradient id="sleeve-round" x1="52" y1="172" x2="109" y2="184" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#000" stopOpacity="0.55" />
+          <stop offset="0.16" stopColor="#000" stopOpacity="0.2" />
+          <stop offset="0.42" stopColor="#fff" stopOpacity="0.055" />
+          <stop offset="0.68" stopColor="#000" stopOpacity="0.04" />
+          <stop offset="0.9" stopColor="#000" stopOpacity="0.34" />
+          <stop offset="1" stopColor="#000" stopOpacity="0.55" />
+        </linearGradient>
 
         {/* base cloth tone: soft top light falling off toward the hem */}
         <linearGradient id="tee-base" x1="0" y1="80" x2="0" y2="380" gradientUnits="userSpaceOnUse">

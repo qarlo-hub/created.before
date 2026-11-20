@@ -2,7 +2,15 @@ import { useEffect, useRef } from 'react';
 import { RASTER, VARIANTS } from '../lib/fabric.js';
 import { DefsContent } from './ShirtDefs.jsx';
 import { GarmentBase, GarmentSurface, PrintShade } from './Shirt.jsx';
-import { SILHOUETTE } from './geometry.js';
+import { PIECES } from './geometry.js';
+
+const Silhouette = (props) => (
+  <g {...props}>
+    {PIECES.map((pc, i) => (
+      <path key={i} d={pc.d} transform={pc.transform} />
+    ))}
+  </g>
+);
 
 /*
  * The cloth (knit noise, blurred drape, baked drop shadow) is expensive to repaint, and on the
@@ -19,9 +27,9 @@ function Source({ kind, seed }) {
         <>
           {/* baked shadow on the wall */}
           {/* the rack stands in front of the wall, lit from the ceiling: a soft shadow falls lower */}
-          <path d={SILHOUETTE} transform="translate(0 40) scale(1 1.02)" fill="#2a2016" opacity="0.2" filter="url(#blur-xl)" />
-          <path d={SILHOUETTE} transform="translate(0 14)" fill="#1e1a14" opacity="0.14" filter="url(#blur-lg)" />
-          <path d={SILHOUETTE} transform="translate(0 3)" fill="#000" opacity="0.28" filter="url(#blur-xs)" />
+          <Silhouette transform="translate(0 40) scale(1 1.02)" fill="#2a2016" opacity="0.2" filter="url(#blur-xl)" />
+          <Silhouette transform="translate(0 14)" fill="#1e1a14" opacity="0.14" filter="url(#blur-lg)" />
+          <Silhouette transform="translate(0 3)" fill="#000" opacity="0.28" filter="url(#blur-xs)" />
           <GarmentBase />
           <GarmentSurface seed={seed} />
         </>
